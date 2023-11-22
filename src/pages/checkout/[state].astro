@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const {state} = Astro.params
+
+const data: { [key: string]: string } = {
+  'success' : 'Su Compra a sido Exitosa',
+  'pending' : 'Su Compra esta pendiente',
+  'failure' : 'Su Compra ha fallido'
+}
+
+export const getStaticPaths = (() => {  
+  return [
+    {params: {state: 'success'}},
+    {params: {state: 'pending'}},
+    {params: {state: 'failure'}}
+  ];
+}) 
+---
+
+<Layout title="Checkout">
+  <main id="checkout">
+    <h1>{data[state]}</h1>
+      <a href="/" class="navLink">Volver a inicio</a>
+  </main>
+</Layout>
+
+<style>
+  #checkout {
+    width: 100%;
+    background-image: url(/images/index/cloud.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: calc(100vh - 4rem - 3rem);
+    margin-top: -0.5rem;
+    padding-top: 0.5rem;    
+
+    & h1 {
+      text-align: center;
+      line-height: 2.8rem;
+    }}
+
+    & a {
+      font-family: "moneta", serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      display: block;
+      width: 200px;
+      text-align: center;
+      height: auto;
+      margin: 2rem auto;
+      padding: 0.5rem 1rem;
+      border-radius: 1.5rem;
+      border: solid 2px #968ab9;
+      background-color: #968ab9;
+      color: var(--main-bg);
+      transition: all 0.5s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+          background-color: var(--main-bg);
+          color: #968ab9;
+      }
+    }
+
+</style>
