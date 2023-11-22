@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 
 const {id} = Astro.params
 
-const data = {
+const data: { [key: string]: string } = {
   '001' : 'Abrazando las adversidades',
   '002' : 'Sobre el duelo',
   '003' : 'Aprendiendo a duelar'
@@ -23,6 +23,7 @@ export const getStaticPaths = (() => {
     <div class="loaderContainer displayNone" id="loader">
       <div class="loader"></div>
     </div>
+    
     <h1>Adquirir el Curso "{data[id]}"</h1>
     <form action="" id="contactForm">
       <input type="text" id="name" name="name" placeholder="Nombre" required />      
@@ -38,7 +39,7 @@ export const getStaticPaths = (() => {
 </Layout>
 
 <script>
-  const data = {
+  const data: { [key: string]: string } = {
     '001' : 'Abrazando las adversidades',
     '002' : 'Sobre el duelo',
     '003' : 'Aprendiendo a duelar'
@@ -60,14 +61,16 @@ export const getStaticPaths = (() => {
   
   const form = document.querySelector("form");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: SubmitEvent) => {
     event.preventDefault();  
 
     const loader = document.getElementById("loader");
     loader && loader.classList.remove("displayNone");
 
-    const data = new FormData(event.target);
-    const payer = Object.fromEntries(data.entries());
+    //const data = new FormData(event.target);
+    const form = event.target as HTMLFormElement;
+    //const payer = Object.fromEntries(data.entries());
+    const payer = Object.fromEntries(Object.entries(data));
 
     //verificar función
     fetch("https://ceciliatorres-server.onrender.com/checkout", {
