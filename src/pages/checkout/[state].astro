@@ -20,6 +20,15 @@ export const getStaticPaths = (() => {
 <Layout title="Checkout">
   <main id="checkout">
     <h1>{data[state]}</h1>
+    {state === 'success' && (
+      <h3>Su compra ha sido exitosa. Pronto nos pondremos en contacto con usted para enviarle el curso</h3>
+    )}
+    {state === 'pending' && (
+      <h3>Su compra esta pendiente. Pronto nos pondremos en contacto con usted para confirmar la compra</h3>
+    )}
+    {state === 'failure' && (
+      <h3>Su compra ha fallado. Por favor intente de nuevo</h3>
+    )}
       <a href="/" class="navLink">Volver a inicio</a>
   </main>
 </Layout>
@@ -39,6 +48,22 @@ export const getStaticPaths = (() => {
       text-align: center;
       line-height: 2.8rem;
     }}
+
+    & h3 {
+      width: 800px;
+      font-size: 1.5rem;
+      text-align: center;    
+      margin: 0 auto 5rem;
+
+      @media screen and (max-width: 992px) {        
+        width: 80vw;
+      }
+      
+      @media screen and (max-width: 576px) {
+        font-size: 1rem;
+        line-height: 1rem;        
+      }
+    }
 
     & a {
       font-family: "moneta", serif;
