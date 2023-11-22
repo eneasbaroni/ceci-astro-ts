@@ -1,8 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-const {id} = Astro.params
+const {id} = Astro.params //string
 
+//si no agrego el tipado, typescript toma que el tipado es {'001' : 'string'} ...  Cunado quiera acceder mediante una key, typescript no puede asegurarse que sea una de esas 3, por lo cual genera el error
+//para solucionar el error, debo agregar el tipado {[key: string]: string}. De está forma le quito especificidad, diciendo que es un string, y lo unico que va a corroborar typescript es que sea de tipo string al momento de indexar
 const data: { [key: string]: string } = {
   '001' : 'Abrazando las adversidades',
   '002' : 'Sobre el duelo',
