@@ -1,0 +1,189 @@
+---
+function anchoPagina() {
+    throw new Error("Function not implemented.");}
+---
+
+<header id="headerWeb">
+    <a href="/" class="navLogoContainer">
+        <img src="/images/header/logo.svg" alt="logo" />
+    </a>    
+    <a href="/" class="navLink">Inicio</a>
+    <a href="/espacio" class="navLink">Mi Libro</a>
+    <!-- <a href="/blog" class="navLink">Blog</a> -->
+    <a href="/about" class="navLink">Sobre mí</a>
+    <a href="/contact" class="navLink">Contacto</a>
+</header>
+
+<header id="headerMobile">    
+    <a href="/" class="navLogoContainer">
+        <img src="/images/header/logo.svg" alt="logo" />
+    </a>    
+    <img id="menuToggle" src='/images/header/menu.svg' alt='menu' class='menu'/>
+    <div id='MobileNav' class="menuHide noHeight">
+        <a href='/' class='navLink'>Inicio</a>
+        <a href='/espacio' class='navLink'>Mi Libro</a>
+        <!-- <a href='/blog' class='navLink'>Blog</a> -->
+        <a href='/about' class='navLink'>Sobre mí</a>
+        <a href='/contact' class='navLink'>Contacto</a>
+    </div>
+</header>
+
+<script>
+    const menuFunction = () => {
+
+        const mobile = document.getElementById('mobile')
+            if (mobile) {
+                window.addEventListener('resize', () => {
+                window.innerWidth < 9000 && mobile.classList.add('mobile');
+        })}
+        
+    
+        const menuToggle = document.getElementById('menuToggle')
+        const mobileNav = document.getElementById('MobileNav')  
+    
+        const toggleMenu = () => {
+            mobileNav && 
+                mobileNav.classList.contains('menuHide') ?
+                (
+                    mobileNav.classList.remove('noHeight'),
+                    setTimeout(() => {
+                        mobileNav.classList.remove('menuHide')
+                        }, 500)                
+                ):
+            mobileNav &&     
+                (
+                    mobileNav.classList.add('menuHide'),
+                    mobileNav.classList.add('noHeight')                
+                )
+                     
+        }
+    
+        {menuToggle && menuToggle.addEventListener('click', () => toggleMenu())}
+    
+    
+        /* const navLinks = document.getElementsByClassName('navLink');
+        if (navLinks) {
+    
+            for (const e in navLinks) {
+        
+                navLinks[e].addEventListener('click', () => toggleMenu())
+            }
+        } */
+    }
+
+    menuFunction()
+
+    document.addEventListener('astro:after-swap', menuFunction);
+    
+
+</script>
+
+<style>
+    header {
+        backdrop-filter: blur(5px);
+        background-color: rgba(255, 255, 255, 0.56);
+        /* border: solid 1px red; */
+        width: 100%;
+        height: 4rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        @media screen and (max-width: 992px) {
+            height: auto;
+            flex-direction: column;
+        }
+
+        & .navLogoContainer {
+            height: 80%;
+            width: auto;
+            position: absolute;
+            left: 2vw;
+
+            @media screen and (max-width: 992px) {
+                position: relative;
+                left: 0;
+                margin-bottom: 1rem;
+            }
+
+            & img {
+                height: 100%;
+                width: auto;
+                padding: 0.2rem 0;
+
+                @media screen and (max-width: 992px) {
+                    height: 3rem;
+                    margin-top: 1rem;
+                }
+            }
+        }
+
+        & .navLink {
+            margin-inline: 1rem;
+            color: var(--main-color);
+            transition: color 0.5s ease-in-out;
+            text-transform: uppercase;
+            font-family: "Source Sans Pro", sans-serif;
+
+            &:hover {
+                color: var(--second-color);
+            }
+        }
+
+        & .menu {
+            width: 3rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        & #MobileNav {
+            position: absolute;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            top: 111px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease-in-out;    
+            height: 120px;  
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        #headerWeb {
+            display: none;
+        }
+    }
+
+    @media screen and (min-width: 992px) {
+        #headerMobile {
+            display: none;
+        }
+    }    
+
+    #headerMobile { 
+        
+        & .noHeight {
+            height: 0px;
+            opacity: 0;
+        }
+
+        & .menuHide {           
+            
+            & .navLink {  
+                transform: translate(0, -500px);              
+                opacity: 0; 
+            }
+        }  
+        
+    }
+
+</style>

@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Acerca de mí">
+
+    <main id="aboutContainer">
+        <div id="about">
+            <img src="/images/about/selfie-01.jpg" alt="Cecilia Torres" />
+            <div class="aboutInfo">
+                <p>
+                    ¡Hola! Soy Cecilia Torres, Licenciada en Gestión Educativa
+                    especializada en Tanatología y otros procesos relacionados con el
+                    Duelo y la Muerte.<br />
+                     Después de 12 años de experiencia en el ámbito educativo, me tocó
+                    vivir la dura experiencia de perder a mi hijo Jerito. Lo que me
+                    transformó muchísimo y me motivó a apostar en mi formación para
+                    convertirla en una herramienta valiosa para el mundo.<br />
+                     Mi propio proceso de duelo me brinda un conocimiento profundo y
+                    empático del terreno, que me permite entender y acompañar las
+                    vivencias de quienes transitan por esta difícil etapa de la vida.
+                    Sumado a mi experiencia personal, mi formación en el tema se basa en
+                    el amor, el compromiso y el respeto hacia cada persona que se acerca
+                    a mí en busca de ayuda.<br />
+                     Creo firmemente que existen tanto teorías como prácticas accesibles
+                    a todas las personas, para ayudarles a transitar su duelo de manera
+                    sana y libre. Esta información puede ser trabajada tanto en el
+                    momento del duelo como en el proceso previo, para prepararnos de
+                    manera más efectiva ante la pérdida de un ser querido.<br />
+                     Mi intención es contribuir a una reconceptualización de la muerte y
+                    del proceso del duelo desde el ámbito educativo, proponiendo
+                    encuentros para darles espacio.
+                </p>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    #aboutContainer {
+        background-image: url(/images/index/cloud.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    #about {
+        max-width: 1500px;
+        margin: auto;
+        padding-top: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;        
+        padding-bottom: 2rem;
+
+        @media screen and (max-width: 992px) {
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        & img {
+            width: 30%;
+            height: 100vh;
+            object-fit: cover;
+            border-radius: 100%;
+            border-radius: 20rem;
+            margin-left: 5rem;
+
+            @media screen and (max-width: 992px) {
+                width: 60%;
+                height: auto;
+                aspect-ratio: 1/1.5;
+                margin-left: 0;
+            }
+        }
+
+        & .aboutInfo {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            & h1,
+            & p {
+                width: 100%;
+                padding: 0 5rem;
+                max-width: 1500px;
+                margin: 0;
+                text-align: left;
+
+                @media screen and (max-width: 992px) {
+                    padding: 0;
+                }
+            }
+
+            & h1 {
+                margin-bottom: 2rem;
+            }
+
+            & p {
+                line-height: 1.8rem;
+            }
+        }
+    }
+</style>

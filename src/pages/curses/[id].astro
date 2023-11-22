@@ -1,0 +1,237 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const {id} = Astro.params
+
+const data = {
+  '001' : 'Abrazando las adversidades',
+  '002' : 'Sobre el duelo',
+  '003' : 'Aprendiendo a duelar'
+}
+
+export const getStaticPaths = (() => {  
+  return [
+    {params: {id: '001'}},
+    {params: {id: '002'}},
+    {params: {id: '003'}}
+  ];
+}) 
+---
+
+<Layout title="Adquirir Curso">
+  <main id="curso">
+    <div class="loaderContainer displayNone" id="loader">
+      <div class="loader"></div>
+    </div>
+    <h1>Adquirir el Curso "{data[id]}"</h1>
+    <form action="" id="contactForm">
+      <input type="text" id="name" name="name" placeholder="Nombre" required />      
+      <input type="text" id="phone" name="phone" placeholder="Numero de Teléfono" required />
+
+      <input type="email" id="identification" name="identification" placeholder="Email" required />
+      <input type="text" id="address" name="address" placeholder="Dirección" required />
+
+      <button type="submit"><p>Enviar</p></button>
+    </form>
+    <div id='mercadopago'></div>
+  </main>
+</Layout>
+
+<script>
+  const data = {
+    '001' : 'Abrazando las adversidades',
+    '002' : 'Sobre el duelo',
+    '003' : 'Aprendiendo a duelar'
+  }
+
+  const urlArr = window.location.href.split('/');
+  const productId = urlArr[urlArr.length - 2]
+
+  console.log('productId', productId);
+
+  const products = [{
+    id: productId,
+    title: data[productId],
+    description: 'Curso online',
+    unit_price: 20000,
+    currency_id: "ARS", //moneda argentina
+    quantity: 1
+  }]
+  
+  const form = document.querySelector("form");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();  
+
+    const loader = document.getElementById("loader");
+    loader && loader.classList.remove("displayNone");
+
+    const data = new FormData(event.target);
+    const payer = Object.fromEntries(data.entries());
+
+    //verificar función
+    fetch("https://ceciliatorres-server.onrender.com/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        products,
+        payer
+      })
+    })
+    .then(response => response.json())  // convertir a json
+    .then(json => {
+
+      loader && loader.classList.add("displayNone");
+      
+      console.log('respuesta', json) //imprimir los datos en la consola
+      const script = document.createElement('script')
+      script.src = "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+      script.dataset.preferenceId = json;
+      script.dataset.buttonLabel = "PAGAR";       
+      const mercadopagoBtn = document.getElementById('mercadopago')
+      mercadopagoBtn && (mercadopagoBtn.innerHTML = '')
+      mercadopagoBtn && mercadopagoBtn.appendChild(script)
+    })
+    .catch(err => console.log('Solicitud fallida', err)); // Capturar errores    
+    
+  };
+
+  form && form.addEventListener("submit", handleSubmit);
+  
+</script>
+
+<style>
+  #curso {
+    width: 100%;
+    background-image: url(/images/index/cloud.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: calc(100vh - 4rem - 3rem);
+    margin-top: -0.5rem;
+    padding-top: 0.5rem;
+
+    & h1 {
+      text-align: center;
+      line-height: 2.8rem;
+    }
+
+    & form {
+      width: 800px;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      @media screen and (max-width: 992px) {
+        width: 80vw;
+      }
+
+      & input {
+        display: flex;
+        width: 40%;
+        height: 2rem;
+        padding: 0.5rem 1rem 0.5rem 0;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid var(--main-color);
+        margin-inline: 1rem;
+
+        &:focus {
+          outline: none;
+        }
+
+        @media screen and (max-width: 992px) {
+          width: 80%;
+        }
+      }
+
+      & button {
+        width: 80%;
+        height: 3rem;
+        margin-top: 1rem;
+        background: transparent;
+        cursor: pointer;
+        border: none;
+        margin-left: 1rem;
+
+        & p {
+          width: 100px;
+          padding: 0.5rem 1rem;
+          background: transparent;
+          border: 1px solid var(--main-color);
+          border-radius: 1.5rem;
+          transition: 0.5s ease-in-out;
+          justify-self: center;
+          align-self: start;
+          margin-left: 0.5rem;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--main-bg);
+            color: #968ab9;
+          }
+        }
+      }
+    }
+  }
+
+  .displayNone {
+    display: none !important;
+  }
+
+  .loaderContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(70, 70, 70, 0.2);
+    backdrop-filter: blur(10px);
+  }
+
+  .loader {
+    display: flex;
+    width: 55px;
+    height: 55px;
+    margin: 0 auto;
+  }
+
+  .loader:after {
+    content: " ";
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid rgb(173, 86, 86);
+    border-color: rgb(173, 86, 86) transparent rgb(173, 86, 86) transparent;
+    animation: loader 1.2s linear infinite;
+  }
+
+  @keyframes loader {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  #mercadopago {
+    width: 600px;
+    margin: auto;
+
+    @media screen and (max-width: 992px) {
+      width: 60%;
+    }  
+  }
+</style>
