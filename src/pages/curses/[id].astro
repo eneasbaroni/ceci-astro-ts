@@ -1,11 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-const {id} = Astro.params //string
-
+const {id} = Astro.params //id es un string
 //si no agrego el tipado, typescript toma que el tipado es {'001' : 'string'} ...  Cunado quiera acceder mediante una key, typescript no puede asegurarse que sea una de esas 3, por lo cual genera el error
 //para solucionar el error, debo agregar el tipado {[key: string]: string}. De está forma le quito especificidad, diciendo que es un string, y lo unico que va a corroborar typescript es que sea de tipo string al momento de indexar
-const data: { [key: string]: string } = {
+const data: { [key: string]: string } = { 
   '001' : 'Abrazando las adversidades',
   '002' : 'Sobre el duelo',
   '003' : 'Aprendiendo a duelar'
@@ -27,6 +26,10 @@ export const getStaticPaths = (() => {
     </div>
     
     <h1>Adquirir el Curso "{data[id]}"</h1>
+    <h3>
+      Complete el formulario y envíelo.</br>
+      Una vez enviado, se procesarán los datos (puede demorar unos segundos) y luego aparecerá el botón de pago
+    </h3>
     <form action="" id="contactForm">
       <input type="text" id="name" name="name" placeholder="Nombre" required />      
       <input type="text" id="phone" name="phone" placeholder="Numero de Teléfono" required />
@@ -71,7 +74,7 @@ export const getStaticPaths = (() => {
 
     //const data = new FormData(event.target);
     const form = event.target as HTMLFormElement;
-    //const payer = Object.fromEntries(data.entries());
+    //const payer = Object.fromEntries(data.entries()); //typescript lo está infiriendo que data es string, por lo cual debo pasarlo a objeto clave-valor
     const payer = Object.fromEntries(Object.entries(data));
 
     //verificar función
@@ -121,6 +124,22 @@ export const getStaticPaths = (() => {
     & h1 {
       text-align: center;
       line-height: 2.8rem;
+    }
+
+    & h3 {
+      width: 800px;
+      font-size: 1.5rem;
+      text-align: center;    
+      margin: 0 auto 5rem;
+
+      @media screen and (max-width: 992px) {        
+        width: 80vw;
+      }
+      
+      @media screen and (max-width: 576px) {
+        font-size: 1rem;
+        line-height: 1rem;        
+      }
     }
 
     & form {
